@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>02.入園手続き等</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+    }
+    h1 {
+      color: #444;
+      margin: 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      max-width: 1000px;
+      width: 90%;
+    }
+    .image-card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      overflow: hidden;
+      background: #f9f9f9;
+      position: relative;
+      text-align: center;
+      cursor: pointer;
+    }
+    .image-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .checkbox-overlay {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255, 255, 255, 0.8);
+      padding: 5px;
+      border-radius: 50%;
+    }
+    .download-options {
+      margin: 20px;
+    }
+    .download-options button {
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #fff;
+      background-color: #666;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .download-options button:hover {
+      background-color: #444;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>02.入園手続き等</h1>
+
+  <div class="download-options">
+    <button onclick="downloadSelected()">選択した画像をダウンロード</button>
+    <button onclick="selectAll()">全て選択</button>
+    <button onclick="clearSelection()">選択を解除</button>
+  </div>
+
+  <div class="gallery" id="gallery">
+    <div class="image-card" id="IMG_0264">
+      <img src="./IMG_0264.JPG" alt="Image 0264">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0265">
+      <img src="./IMG_0265.JPG" alt="Image 0265">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0266">
+      <img src="./IMG_0266.JPG" alt="Image 0266">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0267">
+      <img src="./IMG_0267.JPG" alt="Image 0267">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0285">
+      <img src="./IMG_0285.JPG" alt="Image 0285">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0286">
+      <img src="./IMG_0286.JPG" alt="Image 0286">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0287">
+      <img src="./IMG_0287.JPG" alt="Image 0287">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0295">
+      <img src="./IMG_0295.JPG" alt="Image 0295">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0296">
+      <img src="./IMG_0296.JPG" alt="Image 0296">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0297">
+      <img src="./IMG_0297.JPG" alt="Image 0297">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0298">
+      <img src="./IMG_0298.JPG" alt="Image 0298">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0300">
+      <img src="./IMG_0300.JPG" alt="Image 0300">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0301">
+      <img src="./IMG_0301.JPG" alt="Image 0301">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0302">
+      <img src="./IMG_0302.JPG" alt="Image 0302">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0303">
+      <img src="./IMG_0303.JPG" alt="Image 0303">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0304">
+      <img src="./IMG_0304.JPG" alt="Image 0304">
+      <div class="checkbox-overlay">
+        <input type="checkbox" class="image-checkbox">
+      </div>
+    </div>
+    <div class="image-card" id="IMG_0305">
+      <img src="./IMG_
