@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ファイルアップロード & リネーム & ダウンロード</title>
+    <title>一括ダウンロード - ファイルリネーム & ZIP圧縮</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,24 +15,23 @@
         #file-list {
             margin-top: 20px;
         }
-        .file-item {
-            margin-bottom: 5px;
-        }
     </style>
+    <!-- JSZipライブラリをCDNから読み込み -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
 </head>
 <body>
 
-    <h1>ファイルアップロード & リネーム & ダウンロードツール</h1>
+    <h1>ファイルリネーム & 一括ZIPダウンロード</h1>
 
-    <!-- ファイル選択とアップロードボタン -->
+    <!-- ファイル選択と共通名前入力、ZIP生成ボタン -->
     <input type="file" id="file-input" multiple>
     <input type="text" id="basename" placeholder="共通の名前 (例: abc)">
-    <button onclick="processFiles()">アップロード & ダウンロードリンク生成</button>
+    <button onclick="processFiles()">ZIPファイル生成 & ダウンロード</button>
 
     <div id="file-list"></div>
 
     <script>
-        function processFiles() {
+        async function processFiles() {
             const fileInput = document.getElementById('file-input');
             const basename = document.getElementById('basename').value || 'ファイル';
             const fileList = document.getElementById('file-list');
@@ -43,28 +42,25 @@
                 return;
             }
 
+            const zip = new JSZip();
+
+            // 各ファイルを連番でリネームし、ZIPに追加
             Array.from(fileInput.files).forEach((file, index) => {
                 const newFileName = `${basename}${index + 1}.${file.name.split('.').pop()}`;
-                createDownloadLink(file, newFileName);
+                zip.file(newFileName, file);
             });
-        }
 
-        function createDownloadLink(file, newFileName) {
-            const fileList = document.getElementById('file-list');
+            // ZIPファイルの生成とダウンロード
+            const zipBlob = await zip.generateAsync({ type: 'blob' });
+            const zipUrl = URL.createObjectURL(zipBlob);
 
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const link = document.createElement('a');
-                link.href = event.target.result;
-                link.download = newFileName;
-                link.textContent = `ダウンロード: ${newFileName}`;
-                link.className = 'file-item';
-                fileList.appendChild(link);
-
-                const br = document.createElement('br');
-                fileList.appendChild(br);
-            };
-            reader.readAsDataURL(file); // ファイルをData URL形式で読み込み
+            // ダウンロードリンク生成
+            const link = document.createElement('a');
+            link.href = zipUrl;
+            link.download = `${basename}_files.zip`;
+            link.textContent = '一括ダウンロード (ZIP)';
+            fileList.appendChild(link);
+            link.click(); // 自動クリックでダウンロード
         }
     </script>
 
