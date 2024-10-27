@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ファイルアップロード & リネーム</title>
+    <title>ファイルアップロード & リネーム & ダウンロード</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,17 +22,17 @@
 </head>
 <body>
 
-    <h1>ファイルアップロード & リネームツール</h1>
+    <h1>ファイルアップロード & リネーム & ダウンロードツール</h1>
 
     <!-- ファイル選択とアップロードボタン -->
     <input type="file" id="file-input" multiple>
     <input type="text" id="basename" placeholder="共通の名前 (例: abc)">
-    <button onclick="uploadFiles()">アップロード</button>
+    <button onclick="processFiles()">アップロード & ダウンロードリンク生成</button>
 
     <div id="file-list"></div>
 
     <script>
-        function uploadFiles() {
+        function processFiles() {
             const fileInput = document.getElementById('file-input');
             const basename = document.getElementById('basename').value || 'ファイル';
             const fileList = document.getElementById('file-list');
@@ -44,32 +44,27 @@
             }
 
             Array.from(fileInput.files).forEach((file, index) => {
-                const fileItem = document.createElement('div');
-                fileItem.className = 'file-item';
                 const newFileName = `${basename}${index + 1}.${file.name.split('.').pop()}`;
-
-                fileItem.textContent = `アップロード完了: ${newFileName}`;
-                fileList.appendChild(fileItem);
-
-                // ここで、実際のアップロード処理を追加できます (例えば、サーバーへ送信)
-                // uploadToServer(file, newFileName);
+                createDownloadLink(file, newFileName);
             });
         }
 
-        // 実際のアップロード処理（例）
-        function uploadToServer(file, newFileName) {
-            // フォームデータを作成
-            const formData = new FormData();
-            formData.append('file', file, newFileName);
+        function createDownloadLink(file, newFileName) {
+            const fileList = document.getElementById('file-list');
 
-            // Fetch API を使用してアップロードを実行
-            fetch('/upload', { // 実際のアップロード先URLに変更
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => console.log(data))
-            .catch(error => console.error('アップロード失敗:', error));
+            const reader = new FileReader();
+            reader.onload = function (event) {
+                const link = document.createElement('a');
+                link.href = event.target.result;
+                link.download = newFileName;
+                link.textContent = `ダウンロード: ${newFileName}`;
+                link.className = 'file-item';
+                fileList.appendChild(link);
+
+                const br = document.createElement('br');
+                fileList.appendChild(br);
+            };
+            reader.readAsDataURL(file); // ファイルをData URL形式で読み込み
         }
     </script>
 
