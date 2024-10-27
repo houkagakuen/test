@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>一括ダウンロード - ファイルリネーム & ZIP圧縮</title>
+    <title>一括ダウンロード - 進捗付きZIP圧縮</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,6 +11,19 @@
         }
         input[type="file"] {
             margin-top: 10px;
+        }
+        #progress-container {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #f3f3f3;
+        }
+        #progress-bar {
+            width: 0%;
+            height: 20px;
+            background-color: #4caf50;
+            text-align: center;
+            color: white;
+            line-height: 20px;
         }
         #file-list {
             margin-top: 20px;
@@ -21,13 +34,18 @@
 </head>
 <body>
 
-    <h1>ファイルリネーム & 一括ZIPダウンロード</h1>
+    <h1>ファイルリネーム & 一括ZIPダウンロード（進捗付き）</h1>
 
     <!-- ファイル選択と共通名前入力、ZIP生成ボタン -->
     <input type="file" id="file-input" multiple>
     <input type="text" id="basename" placeholder="共通の名前 (例: abc)">
     <button onclick="processFiles()">ZIPファイル生成 & ダウンロード</button>
 
+    <!-- 進捗表示 -->
+    <div id="progress-container">
+        <div id="progress-bar">0%</div>
+    </div>
+    <div id="time-estimate"></div>
     <div id="file-list"></div>
 
     <script>
@@ -35,6 +53,8 @@
             const fileInput = document.getElementById('file-input');
             const basename = document.getElementById('basename').value || 'ファイル';
             const fileList = document.getElementById('file-list');
+            const progressBar = document.getElementById('progress-bar');
+            const timeEstimate = document.getElementById('time-estimate');
             fileList.innerHTML = ''; // リストをクリア
 
             if (!fileInput.files.length) {
@@ -43,6 +63,7 @@
             }
 
             const zip = new JSZip();
+            const startTime = Date.now();
 
             // 各ファイルを連番でリネームし、ZIPに追加
             Array.from(fileInput.files).forEach((file, index) => {
@@ -50,17 +71,31 @@
                 zip.file(newFileName, file);
             });
 
-            // ZIPファイルの生成とダウンロード
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
-            const zipUrl = URL.createObjectURL(zipBlob);
+            // ZIP生成の進捗表示と時間見積もり
+            zip.generateAsync({ type: 'blob' }, function updateCallback(metadata) {
+                const percent = Math.round(metadata.percent);
+                progressBar.style.width = percent + '%';
+                progressBar.textContent = percent + '%';
 
-            // ダウンロードリンク生成
-            const link = document.createElement('a');
-            link.href = zipUrl;
-            link.download = `${basename}_files.zip`;
-            link.textContent = '一括ダウンロード (ZIP)';
-            fileList.appendChild(link);
-            link.click(); // 自動クリックでダウンロード
+                // 経過時間と残り時間の計算
+                const elapsed = (Date.now() - startTime) / 1000; // 経過秒
+                const estimatedTotalTime = elapsed * (100 / percent); // 全体の見積もり時間
+                const remainingTime = Math.round(estimatedTotalTime - elapsed);
+
+                timeEstimate.textContent = `残り時間: ${remainingTime} 秒`;
+            }).then(zipBlob => {
+                const zipUrl = URL.createObjectURL(zipBlob);
+
+                // ダウンロードリンク生成
+                const link = document.createElement('a');
+                link.href = zipUrl;
+                link.download = `${basename}_files.zip`;
+                link.textContent = '一括ダウンロード (ZIP)';
+                fileList.appendChild(link);
+                link.click(); // 自動クリックでダウンロード
+            }).catch(error => {
+                alert("ZIPファイルの生成に失敗しました: " + error);
+            });
         }
     </script>
 
