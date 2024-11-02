@@ -8,63 +8,57 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
         header {
-            background-color: #0078d7;
+            background-color: #3b5998;
             color: white;
             padding: 10px 20px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-        .menu-bar {
-            margin-right: auto;
+        .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        .menu {
             display: flex;
             gap: 15px;
         }
-        .menu-bar a {
+        .menu a {
             color: white;
             text-decoration: none;
-        }
-        .title {
-            font-size: 1.5em;
             font-weight: bold;
+        }
+        .menu a:hover {
+            text-decoration: underline;
         }
         .search-bar {
             margin-left: auto;
         }
         .search-bar input[type="text"] {
             padding: 5px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
-        .search-bar input[type="submit"] {
-            padding: 5px 10px;
-            background-color: #005a9e;
-            color: white;
+            border-radius: 3px;
             border: none;
-            border-radius: 4px;
-            cursor: pointer;
+            outline: none;
         }
     </style>
 </head>
 <body>
     <header>
-        <nav class="menu-bar">
-            <a href="#home">ホーム</a>
-            <a href="#student_search">囚人検索</a>
-            <a href="#reports">報告書</a>
-            <a href="#settings">設定</a>
+        <div class="logo">蜂窩学園 職員ポータル</div>
+        <nav class="menu">
+            <a href="#">ホーム</a>
+            <a href="#">囚人検索</a>
+            <a href="#">職員一覧</a>
+            <a href="#">お知らせ</a>
         </nav>
-        <div class="title">蜂窩学園 職員ポータル</div>
         <div class="search-bar">
             <input type="text" placeholder="検索...">
-            <input type="submit" value="検索">
         </div>
     </header>
-    <main>
-        <!-- サイトの内容はここに埋め込みます -->
-    </main>
+    <!-- 他のコンテンツはここに埋め込む -->
 </body>
 </html>
